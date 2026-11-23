@@ -1,12 +1,27 @@
 def chunk_text(text: str, size: int = 50, overlap: int = 10) -> list[str]:
-    """Split `text` into chunks of words.
+    if size <= 0:
+        raise ValueError("size must be greater than 0")
 
-    Rules (see README for examples):
-    - Words are separated by whitespace (use str.split()).
-    - Each chunk has at most `size` words, joined with a single space.
-    - Consecutive chunks share exactly `overlap` words.
-    - Stop when a chunk reaches the last word. No extra trailing chunk.
-    - Empty or whitespace-only text returns [].
-    - Raise ValueError if size <= 0, overlap < 0, or overlap >= size.
-    """
-    raise NotImplementedError
+    if overlap < 0:
+        raise ValueError("overlap cannot be negative")
+
+    if overlap >= size:
+        raise ValueError("overlap must be less than size")
+
+    words = text.split()
+
+    if not words:
+        return []
+
+    step = size - overlap
+    chunks = []
+
+    for i in range(0, len(words), step):
+        chunk_words = words[i:i + size]
+        chunk = " ".join(chunk_words)
+        chunks.append(chunk)
+
+        if i + size >= len(words):
+            break
+
+    return chunks
