@@ -8,13 +8,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.chunking import chunk_text
-from app.main import create_app
-
-
-@pytest.fixture
-def client():
-    return TestClient(create_app())
-
 
 def test_health(client):
     assert client.get("/health").json() == {"status": "ok"}
@@ -43,3 +36,9 @@ def test_ingest_then_ask(client):
     body = r.json()
     assert body["sources"][0]["doc_id"] == "cats"
     assert body["sources"][0]["chunk_id"] == "cats:0"
+
+
+
+
+
+
